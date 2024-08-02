@@ -132,12 +132,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	HRESULT result = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
 
-//#ifdef _DEBUG
-//	result = CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&dxgiFactory));
-//#else
-//	result = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
-//#endif
-
 	// アダプタ列挙用
 	std::vector<IDXGIAdapter*> adapters;
 
@@ -528,20 +522,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 全てのシェーダーから見える
 	rootparam.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
-	//D3D12_ROOT_PARAMETER rootparam[2] = {};
-	//rootparam[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	//// デスクリプタレンジのアドレス
-	//rootparam[0].DescriptorTable.pDescriptorRanges = &descTblRange[0];
-	//// ディスクリプタレンジ数
-	//rootparam[0].DescriptorTable.NumDescriptorRanges = 1;
-	//// ピクセルシェーダーから見える
-	//rootparam[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-
-	//rootparam[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	//rootparam[1].DescriptorTable.pDescriptorRanges = &descTblRange[1];
-	//rootparam[1].DescriptorTable.NumDescriptorRanges = 1;
-	//rootparam[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
-
 	// ルートパラメーターの先頭アドレス
 	rootSignatureDesc.pParameters = &rootparam;
 	// ルートパラメーター数
@@ -626,20 +606,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 生データ抽出
 	auto img = scratchImg.GetImage(0, 0, 0);
 
-	/*struct TexRGBA
-	{
-		unsigned char R, G, B, A;
-	};
-
-	std::vector<TexRGBA> texturedata(256 * 256);
-	for (auto& rgba : texturedata)
-	{
-		rgba.R = rand() % 256;
-		rgba.G = rand() % 256;
-		rgba.B = rand() % 256;
-		rgba.A =255;
-	}*/
-
 	// WriteToSubresourceで転送するためのヒープ設定
 	D3D12_HEAP_PROPERTIES texheapProp = {};
 	// 特殊な設定なのでDEFAULTでもUPLOADでもない
@@ -707,10 +673,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		1.0f, // 近いほう
 		10.0f // 遠いほう
 	);
-	//matrix.r[0].m128_f32[0] = 2.0f / window_width;
-	//matrix.r[1].m128_f32[1] = -2.0f / window_height;
-	//matrix.r[3].m128_f32[0] = -1.0f;
-	//matrix.r[3].m128_f32[1] = 1.0f;
+
 	// 定数バッファ作成
 	ID3D12Resource* constBuff = nullptr;
 	heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -794,21 +757,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// バックバッファ取得
 		auto bbIdx = swapChain->GetCurrentBackBufferIndex();
 
-		//D3D12_RESOURCE_BARRIER barrierDesc = {};
-		//// 遷移
-		//barrierDesc.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-		//// 特に指定なし
-		//barrierDesc.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-		//barrierDesc.Transition.pResource = backBuffers[bbIdx];
-		//// バックバッファリソース
-		//barrierDesc.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-		//// 直前はPRESENT状態
-		//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
-		//// 今からレンダーターゲット状態
-		//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-		// バリア指定実行
-		//cmdList->ResourceBarrier(1, &barrierDesc);
-
 		auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 			backBuffers[bbIdx],
 			D3D12_RESOURCE_STATE_PRESENT,
@@ -837,15 +785,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		cmdList->SetGraphicsRootSignature(rootsignature);
 		cmdList->SetDescriptorHeaps(1, &basicDescHeap);
-		//auto heapHandle = basicDescHeap->GetGPUDescriptorHandleForHeapStart();
-		//heapHandle.ptr += dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		cmdList->SetGraphicsRootDescriptorTable(0, basicDescHeap->GetGPUDescriptorHandleForHeapStart());
 
-		//cmdList->DrawInstanced(vertNum, 1, 0, 0);
 		cmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
-		//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-		//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 		barrier = CD3DX12_RESOURCE_BARRIER::Transition(backBuffers[bbIdx],
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
 			D3D12_RESOURCE_STATE_PRESENT);
