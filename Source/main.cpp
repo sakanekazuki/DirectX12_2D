@@ -26,22 +26,6 @@
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib, "DirectXTex.lib")
 
-struct PMDVertex
-{
-	// 頂点座標
-	DirectX::XMFLOAT3 pos;
-	// 法線ベクトル
-	DirectX::XMFLOAT3 normal;
-	// uv座標
-	DirectX::XMFLOAT2 uv;
-	// ボーン番号
-	unsigned short boneNo[2];
-	// ボーン影響度
-	unsigned char boneWeight;
-	// 輪郭線フラグ
-	unsigned char edgeFlg;
-};
-
 /**
 * @brief コンソール画面にフォーマット付き文字列を表示
 * @param format フォーマット
@@ -286,84 +270,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// ウィンドウ表示
 	ShowWindow(hwnd, SW_SHOW);
 
-	struct PMDHeader
+	struct Vertex
 	{
-		float version;
-		// モデル名
-		char model_name[20];
-		// モデルコメント
-		char momment[256];
+		// 座標
+		DirectX::XMFLOAT3 pos;
+		// uv座標
+		DirectX::XMFLOAT2 uv;
 	};
 
-	char signature[3] = {};
-	PMDHeader pmdheader = {};
-	auto fp = fopen("Resource/Model/初音ミク.pmd", "rb");
-
-	fread(signature, sizeof(signature), 1, fp);
-	fread(&pmdheader, sizeof(pmdheader), 1, fp);
-
-	// 頂点数
-	unsigned int vertNum;
-	fread(&vertNum, sizeof(vertNum), 1, fp);
-
-	// 頂点1つあたりのサイズ
-	constexpr size_t pmdvertex_size = 38;
-
-	// バッファ確保
-	std::vector<unsigned char> vertices(vertNum * pmdvertex_size);
-	fread(vertices.data(), vertices.size(), 1, fp);
-
-	fclose(fp);
-
-	//struct Vertex
-	//{
-	//	// 座標
-	//	DirectX::XMFLOAT3 pos;
-	//	// uv座標
-	//	DirectX::XMFLOAT2 uv;
-	//};
-
-	//// 3頂点
-	//Vertex vertices[] =
-	//{
-	//	{{-1.0f,-1.0f,0.0f},{0.0f,1.0f}},
-	//	{{-1.0f, 1.0f,0.0f},{0.0f,0.0f}},
-	//	{{ 1.0f,-1.0f,0.0f},{1.0f,1.0f}},
-	//	{{ 1.0f, 1.0f,0.0f},{1.0f,0.0f}},
-	//};
-
-	D3D12_HEAP_PROPERTIES heapprop = {};
-
-	heapprop.Type = D3D12_HEAP_TYPE_UPLOAD;
-	heapprop.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
-	heapprop.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
-
-	D3D12_RESOURCE_DESC resdesc = {};
-
-	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	// 頂点情報が入るだけのサイズ
-	resdesc.Width = sizeof(vertices);
-	resdesc.Height = 1;
-	resdesc.DepthOrArraySize = 1;
-	resdesc.MipLevels = 1;
-	resdesc.Format = DXGI_FORMAT_UNKNOWN;
-	resdesc.SampleDesc.Count = 1;
-	resdesc.Flags = D3D12_RESOURCE_FLAG_NONE;
-	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	// 3頂点
+	Vertex vertices[] =
+	{
+		{{-1.0f,-1.0f,0.0f},{0.0f,1.0f}},
+		{{-1.0f, 1.0f,0.0f},{0.0f,0.0f}},
+		{{ 1.0f,-1.0f,0.0f},{1.0f,1.0f}},
+		{{ 1.0f, 1.0f,0.0f},{1.0f,0.0f}},
+	};
 
 	ID3D12Resource* vertBuff = nullptr;
 
 	auto heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	auto resDesc = CD3DX12_RESOURCE_DESC::Buffer(vertices.size());
+	auto resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices));
 	result = dev->CreateCommittedResource(
-		&heapprop,
+		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
 
-	unsigned char* vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	std::copy(std::begin(vertices), std::end(vertices), vertMap);
 	vertBuff->Unmap(0, nullptr);
@@ -372,9 +308,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// バッファの仮想アドレス
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	// 全バイト数
-	vbView.SizeInBytes = vertices.size();
+	vbView.SizeInBytes = sizeof(vertices);
 	// 1頂点あたりのバイト数
-	vbView.StrideInBytes = pmdvertex_size;
+	vbView.StrideInBytes = sizeof(vertices[0]);
 
 	unsigned short indices[] =
 	{
@@ -384,13 +320,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	ID3D12Resource* idxBuff = nullptr;
 
-	// 設定は、バッファのサイズ以外、頂点バッファの設定を使いまわしてよい
-	resdesc.Width = sizeof(indices);
-
+	heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(indices));
 	result = dev->CreateCommittedResource(
-		&heapprop,
+		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
-		&resdesc,
+		&resDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&idxBuff));
@@ -494,45 +429,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			0
 		},
 		{
-			"NORMAL",
-			0,
-			DXGI_FORMAT_R32G32B32_FLOAT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{
 			"TEXCOORD",
 			0,
 			DXGI_FORMAT_R32G32_FLOAT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{
-			"BONE_NO",
-			0,
-			DXGI_FORMAT_R16G16_UINT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{
-			"WEIGHT",
-			0,
-			DXGI_FORMAT_R8_UINT,
-			0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-			0
-		},
-		{
-			"EDGE_FLG",
-			0,
-			DXGI_FORMAT_R8_UINT,
 			0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
@@ -742,17 +641,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}*/
 
 	// WriteToSubresourceで転送するためのヒープ設定
-	D3D12_HEAP_PROPERTIES texHeapProp = {};
+	D3D12_HEAP_PROPERTIES texheapProp = {};
 	// 特殊な設定なのでDEFAULTでもUPLOADでもない
-	texHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+	texheapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
 	// ライトバック
-	texHeapProp.CPUPageProperty =
+	texheapProp.CPUPageProperty =
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	// 転送はL0、つまりCPU側から直接行う
-	texHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	texheapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
 	// 単一アダプタのための0
-	texHeapProp.CreationNodeMask = 0;
-	texHeapProp.VisibleNodeMask = 0;
+	texheapProp.CreationNodeMask = 0;
+	texheapProp.VisibleNodeMask = 0;
 
 	resDesc.Format = metadata.format;
 	// 幅
@@ -777,7 +676,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Resource* texbuff = nullptr;
 
 	result = dev->CreateCommittedResource(
-		&texHeapProp,
+		&texheapProp,
 		D3D12_HEAP_FLAG_NONE, // 特になし
 		&resDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, // テクスチャ用指定
@@ -793,8 +692,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	DirectX::XMMATRIX worldMat = DirectX::XMMatrixRotationY(DirectX::XM_PIDIV4);
 
-	DirectX::XMFLOAT3 eye(0, 10, -15);
-	DirectX::XMFLOAT3 target(0, 10, 0);
+	DirectX::XMFLOAT3 eye(0, 0, -5);
+	DirectX::XMFLOAT3 target(0, 0, 0);
 	DirectX::XMFLOAT3 up(0, 1, 0);
 
 	auto viewMat = DirectX::XMMatrixLookAtLH(
@@ -925,14 +824,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		cmdList->OMSetRenderTargets(1, &rtvH, false, nullptr);
 
 		// 黄色
-		float clearColor[] = { 1.0f,1.0f,1.0f,1.0f };
+		float clearColor[] = { 1.0f,1.0f,0.0f,1.0f };
 		cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 
 		cmdList->RSSetViewports(1, &viewport);
 		cmdList->RSSetScissorRects(1, &scissorrect);
 		cmdList->SetGraphicsRootSignature(rootsignature);
 
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		cmdList->IASetVertexBuffers(0, 1, &vbView);
 		cmdList->IASetIndexBuffer(&ibView);
 
@@ -942,8 +841,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//heapHandle.ptr += dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		cmdList->SetGraphicsRootDescriptorTable(0, basicDescHeap->GetGPUDescriptorHandleForHeapStart());
 
-		cmdList->DrawInstanced(vertNum, 1, 0, 0);
-		//cmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
+		//cmdList->DrawInstanced(vertNum, 1, 0, 0);
+		cmdList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 		//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 		//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
