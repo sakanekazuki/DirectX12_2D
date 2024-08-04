@@ -13,26 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\Shader">
-      <UniqueIdentifier>{42af3481-00e0-4cba-8877-8b26d17bfb06}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Utility">
+      <UniqueIdentifier>{e582a9de-ae62-4d8a-b8a7-07316ea8efee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utility\Utility.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Source\Shader\BasicPixelShader.hlsl">
-      <Filter>ソース ファイル\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shader\BasicVertexShader.hlsl">
-      <Filter>ソース ファイル\Shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\Shader\BasicShaderHeader.hlsli">
-      <Filter>ソース ファイル\Shader</Filter>
-    </None>
+    <ClInclude Include="Source\Application.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utility\Utility.h">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
