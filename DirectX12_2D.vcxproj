@@ -133,11 +133,15 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\StandardTemplateLibrary\String.cpp" />
     <ClCompile Include="Source\Utility\Utility.cpp" />
+    <ClCompile Include="Source\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\StandardTemplateLibrary\String.h" />
     <ClInclude Include="Source\Utility\Utility.h" />
+    <ClInclude Include="Source\Window\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

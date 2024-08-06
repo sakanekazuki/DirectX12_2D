@@ -5,16 +5,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="ソース ファイル\Utility">
       <UniqueIdentifier>{e582a9de-ae62-4d8a-b8a7-07316ea8efee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Window">
+      <UniqueIdentifier>{2391f832-798b-4eef-8bd0-8cb2fc159c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\StandardTemplateLibrary">
+      <UniqueIdentifier>{043d254e-f367-42e6-a0d0-ee61e8e49119}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +25,12 @@
     <ClCompile Include="Source\Utility\Utility.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Window\Window.cpp">
+      <Filter>ソース ファイル\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StandardTemplateLibrary\String.cpp">
+      <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -34,6 +38,12 @@
     </ClInclude>
     <ClInclude Include="Source\Utility\Utility.h">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window\Window.h">
+      <Filter>ソース ファイル\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StandardTemplateLibrary\String.h">
+      <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

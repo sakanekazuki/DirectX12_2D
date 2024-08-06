@@ -17,23 +17,40 @@
 #include <d3dx12.h>
 #include <wrl.h>
 
+#include "StandardTemplateLibrary/String.h"
+
 // アプリケーションクラス
 class Application
 {
 public:
 	static bool Initialize();
+	static Application& Instance();
+	static void Finalize();
 
-	Application& Instance();
 	void Run();
 
-	void Terminate();
-
 private:
+	Application();
+	~Application() = default;
+	Application(const Application&) = delete;
+	Application& operator=(const Application&) = delete;
+
+	HRESULT CreateDevice();
+
 	const unsigned int windowWidth = 1280;
 	const unsigned int windowHeight = 720;
 
-	WNDCLASSEX windowClass;
+	STL::String windowName;
+
+	WNDCLASSEX windowClass = {};
 	HWND hwnd;
+
+	// dxgi
+	Microsoft::WRL::ComPtr<IDXGIFactory6> dxgiFactory = nullptr;
+	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain = nullptr;
+
+	// デバイス
+	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
 
 };
 

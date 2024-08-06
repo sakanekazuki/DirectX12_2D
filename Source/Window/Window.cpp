@@ -26,7 +26,8 @@ void CraeteWindow(
 	HWND& hwnd,
 	WNDCLASSEX& windowClass,
 	const unsigned int width,
-	const unsigned int height)
+	const unsigned int height,
+	const std::wstring& titleName)
 {
 	HINSTANCE hInstance = GetModuleHandle(nullptr);
 

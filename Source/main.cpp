@@ -4,6 +4,8 @@
 
 #include "Application.h"
 
+#include "Window/Window.h"
+
 #ifdef _DEBUG
 int main()
 #else
@@ -13,6 +15,11 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 {
 	Application::Initialize();
 
+	Application& app = Application::Instance();
+
+	app.Run();
+
+	Application::Finalize();
 
 	return 0;
 }
