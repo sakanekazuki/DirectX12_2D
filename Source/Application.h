@@ -36,6 +36,7 @@ private:
 	Application& operator=(const Application&) = delete;
 
 	HRESULT CreateDevice();
+	HRESULT CreateCommand();
 
 	const unsigned int windowWidth = 1280;
 	const unsigned int windowHeight = 720;
@@ -51,6 +52,9 @@ private:
 
 	// デバイス
 	Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
 
 };
 

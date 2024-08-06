@@ -45,8 +45,14 @@ bool Application::Initialize()
 			application->windowHeight,
 			application->windowName);
 
-		// デバイス作成
+		// デバイス初期化
 		if (FAILED(application->CreateDevice()))
+		{
+			assert(0);
+			return false;
+		}
+
+		if (FAILED(application->CreateCommand()))
 		{
 			assert(0);
 			return false;
@@ -165,4 +171,46 @@ HRESULT Application::CreateDevice()
 	}
 
 	return result;
+}
+
+/**
+* コマンド作成
+*/
+HRESULT Application::CreateCommand()
+{
+	auto result = device->CreateCommandAllocator(
+		D3D12_COMMAND_LIST_TYPE_DIRECT,
+		IID_PPV_ARGS(commandAllocator.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		assert(0);
+		return result;
+	}
+	result = device->CreateCommandList(0,
+		D3D12_COMMAND_LIST_TYPE_DIRECT,
+		commandAllocator.Get(),
+		nullptr, 
+		IID_PPV_ARGS(&commandList));
+	if (FAILED(result))
+	{
+		assert(0);
+		return result;
+	}
+
+	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
+	// タイムアウトなし
+	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+	// アダプタを1つしか使わない
+	cmdQueueDesc.NodeMask = 0;
+	// プライオリティは特に指定なし
+	cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+	// コマンドリストと合わせる
+	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+	// キュー生成
+	result = device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(commandQueue.ReleaseAndGetAddressOf()));
+	if (FAILED(result))
+	{
+		assert(0);
+	}
+	return S_OK;
 }
