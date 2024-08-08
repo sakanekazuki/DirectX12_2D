@@ -37,6 +37,11 @@ private:
 
 	HRESULT CreateDevice();
 	HRESULT CreateCommand();
+	HRESULT CreateSwapChain();
+	HRESULT CreateRenderTarget();
+	HRESULT CreateDepthStencilView();
+	HRESULT CreateGraphicsPipeline();
+	HRESULT CreateRootSignature();
 
 	const unsigned int windowWidth = 1280;
 	const unsigned int windowHeight = 720;
@@ -55,6 +60,21 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;
+	UINT64 fenceValue = 0;
+
+	D3D12_VERTEX_BUFFER_VIEW vbView = {};
+
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+
+	std::vector<ID3D12Resource*> backBuffers;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap = nullptr;
+	CD3DX12_VIEWPORT viewport;
+	CD3DX12_RECT scissorrect;
 
 };
 

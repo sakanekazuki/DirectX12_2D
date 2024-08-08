@@ -14,6 +14,12 @@
     <Filter Include="ソース ファイル\StandardTemplateLibrary">
       <UniqueIdentifier>{043d254e-f367-42e6-a0d0-ee61e8e49119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Math">
+      <UniqueIdentifier>{f7ec794b-d7b7-48d4-a13a-a6a33de48b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader">
+      <UniqueIdentifier>{d414821b-3dba-4d99-bef1-cbbbc054dfc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -31,6 +37,9 @@
     <ClCompile Include="Source\StandardTemplateLibrary\String.cpp">
       <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Math\Vector4.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -45,5 +54,21 @@
     <ClInclude Include="Source\StandardTemplateLibrary\String.h">
       <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Math\Vector4.h">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shader\BasicPixelShader.hlsl">
+      <Filter>ソース ファイル\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shader\BasicVertexShader.hlsl">
+      <Filter>ソース ファイル\Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shader\BasicShaderHeader.hlsli">
+      <Filter>ソース ファイル\Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
