@@ -7,11 +7,39 @@
 
 #include <Windows.h>
 #include <string>
+#include <unordered_map>
 
 // ウィンドウ管理
 namespace WindowManagement
 {
-void CraeteWindow(HWND& hwnd, WNDCLASSEX& windowClass, const unsigned int width, const unsigned int height,const std::wstring& titleName);
+/**
+* ウィンドウ管理クラス
+*/
+class WindowManager
+{
+public:
+	~WindowManager() = default;
+
+	static bool Initialize();
+	static void Finalize();
+	static WindowManager& Instance();
+
+	HWND& CraeteWindow(const unsigned int width, const unsigned int height, std::string titleName);
+	bool ShowWindowByName(std::string windowName);
+
+	WNDCLASSEX& GetWindowClass(std::string windowName);
+	HWND& GetWindow(std::string widowName);
+
+private:
+	WindowManager() = default;
+	WindowManager(const WindowManager&) = delete;
+	WindowManager& operator=(const WindowManager&) = delete;
+
+	std::unordered_map<std::string, WNDCLASSEX> windowClasses;
+	std::unordered_map<std::string, HWND> hwnds;
+
+};
+
 } // namespace WindowManagement
 
 #endif // WINDOW_H_INCLUDE

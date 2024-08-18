@@ -11,13 +11,12 @@
 #include <dxgi1_6.h>
 #include <DirectXMath.h>
 #include <vector>
+#include <string>
 #include <map>
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <d3dx12.h>
 #include <wrl.h>
-
-#include "StandardTemplateLibrary/String.h"
 
 // アプリケーションクラス
 class Application
@@ -39,17 +38,17 @@ private:
 	HRESULT CreateCommand();
 	HRESULT CreateSwapChain();
 	HRESULT CreateRenderTarget();
-	HRESULT CreateDepthStencilView();
+	HRESULT CreateVertexBuffer();
 	HRESULT CreateGraphicsPipeline();
 	HRESULT CreateRootSignature();
 
 	const unsigned int windowWidth = 1280;
 	const unsigned int windowHeight = 720;
 
-	STL::String windowName;
+	std::string windowName;
 
 	WNDCLASSEX windowClass = {};
-	HWND hwnd;
+	HWND hwnd = {};
 
 	// dxgi
 	Microsoft::WRL::ComPtr<IDXGIFactory6> dxgiFactory = nullptr;

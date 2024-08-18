@@ -11,14 +11,26 @@
     <Filter Include="ソース ファイル\Window">
       <UniqueIdentifier>{2391f832-798b-4eef-8bd0-8cb2fc159c5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\StandardTemplateLibrary">
-      <UniqueIdentifier>{043d254e-f367-42e6-a0d0-ee61e8e49119}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Math">
       <UniqueIdentifier>{f7ec794b-d7b7-48d4-a13a-a6a33de48b87}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Shader">
       <UniqueIdentifier>{d414821b-3dba-4d99-bef1-cbbbc054dfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics">
+      <UniqueIdentifier>{bcb0ac3c-df51-49e9-b7b2-f269ad970d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Physics\Collision">
+      <UniqueIdentifier>{ffa91aca-16a9-43a0-ae17-176199180b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Component">
+      <UniqueIdentifier>{789c4e6f-5874-4980-8cb8-14bc9676d3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor">
+      <UniqueIdentifier>{b10995dc-b941-437c-9015-8687fee6de0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Transform">
+      <UniqueIdentifier>{805355b8-4533-4ebb-891e-e74c6e9f758d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,11 +46,23 @@
     <ClCompile Include="Source\Window\Window.cpp">
       <Filter>ソース ファイル\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StandardTemplateLibrary\String.cpp">
-      <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Math\Vector4.cpp">
       <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector3.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Vector2.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\PhysicsManager.cpp">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\Actor.cpp">
+      <Filter>ソース ファイル\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform\Transform.cpp">
+      <Filter>ソース ファイル\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,11 +75,29 @@
     <ClInclude Include="Source\Window\Window.h">
       <Filter>ソース ファイル\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StandardTemplateLibrary\String.h">
-      <Filter>ソース ファイル\StandardTemplateLibrary</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Math\Vector4.h">
       <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector3.h">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vector2.h">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\PhysicsManager.h">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collision\Collider.h">
+      <Filter>ソース ファイル\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Component.h">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\Actor.h">
+      <Filter>ソース ファイル\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform\Transform.h">
+      <Filter>ソース ファイル\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

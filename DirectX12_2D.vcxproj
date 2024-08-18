@@ -131,17 +131,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Math\Vector2.cpp" />
+    <ClCompile Include="Source\Math\Vector3.cpp" />
     <ClCompile Include="Source\Math\Vector4.cpp" />
-    <ClCompile Include="Source\StandardTemplateLibrary\String.cpp" />
+    <ClCompile Include="Source\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Source\Transform\Transform.cpp" />
     <ClCompile Include="Source\Utility\Utility.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Component\Component.h" />
+    <ClInclude Include="Source\Math\Vector2.h" />
+    <ClInclude Include="Source\Math\Vector3.h" />
     <ClInclude Include="Source\Math\Vector4.h" />
-    <ClInclude Include="Source\StandardTemplateLibrary\String.h" />
+    <ClInclude Include="Source\Physics\Collision\Collider.h" />
+    <ClInclude Include="Source\Physics\PhysicsManager.h" />
+    <ClInclude Include="Source\Transform\Transform.h" />
     <ClInclude Include="Source\Utility\Utility.h" />
     <ClInclude Include="Source\Window\Window.h" />
   </ItemGroup>

@@ -53,12 +53,17 @@ bool Application::Initialize()
 		EnableDebugLayer();
 #endif
 
+		// ウィンドウマネージャー初期化
+		WindowManagement::WindowManager::Initialize();
+		// ウィンドウマネージャー取得
+		WindowManagement::WindowManager& windowManager = WindowManagement::WindowManager::Instance();
 		// ウィンドウ作成
-		WindowManagement::CraeteWindow(application->hwnd,
-			application->windowClass,
+		application->hwnd = windowManager.CraeteWindow(
 			application->windowWidth,
 			application->windowHeight,
 			application->windowName);
+
+		application->windowClass = windowManager.GetWindowClass(application->windowName);
 
 		// デバイス初期化
 		if (FAILED(application->CreateDevice()))
@@ -83,7 +88,7 @@ bool Application::Initialize()
 			return false;
 		}
 
-		if (FAILED(application->CreateDepthStencilView()))
+		if (FAILED(application->CreateVertexBuffer()))
 		{
 			assert(0);
 			return false;
@@ -142,8 +147,9 @@ void Application::Finalize()
 */
 void Application::Run()
 {
-	// ウィンドウ表示
-	ShowWindow(hwnd, SW_SHOW);
+	WindowManagement::WindowManager& windowManager = WindowManagement::WindowManager::Instance();
+	windowManager.ShowWindowByName(windowName);
+
 	MSG msg = {};
 	// メインループ
 	while (true)
@@ -185,6 +191,12 @@ void Application::Run()
 		commandList->SetGraphicsRootSignature(rootSignature.Get());
 
 		commandList->DrawInstanced(3, 1, 0, 0);
+
+		barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+			backBuffers[bbIdx],
+			D3D12_RESOURCE_STATE_RENDER_TARGET,
+			D3D12_RESOURCE_STATE_PRESENT);
+		commandList->ResourceBarrier(1, &barrier);
 
 		commandList->Close();
 
@@ -368,14 +380,23 @@ HRESULT Application::CreateRenderTarget()
 		device->CreateRenderTargetView(backBuffers[idx], nullptr, handle);
 		handle.ptr += device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	}
-	viewport = CD3DX12_VIEWPORT(backBuffers[0]);
-	scissorrect = CD3DX12_RECT(0, 0, windowWidth, windowHeight);
+	viewport.Width = windowWidth;
+	viewport.Height = windowHeight;
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.MaxDepth = 1.0f;
+	viewport.MinDepth = 0.0f;
+
+	scissorrect.top = 0;
+	scissorrect.left = 0;
+	scissorrect.right = scissorrect.left + windowWidth;
+	scissorrect.bottom = scissorrect.top + windowHeight;
 
 	return result;
 }
 
 
-HRESULT Application::CreateDepthStencilView()
+HRESULT Application::CreateVertexBuffer()
 {
 	DirectX::XMFLOAT3 vertices[] =
 	{
@@ -384,8 +405,23 @@ HRESULT Application::CreateDepthStencilView()
 		{1.0f,-1.0f,0.0f},
 	};
 
-	auto heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	auto resDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices));
+	D3D12_HEAP_PROPERTIES heapProp = {};
+	
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+
+	D3D12_RESOURCE_DESC resDesc = {};
+
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeof(vertices);
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.Format = DXGI_FORMAT_UNKNOWN;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	auto result = device->CreateCommittedResource(
 		&heapProp,
@@ -504,8 +540,10 @@ HRESULT Application::CreateGraphicsPipeline()
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline = {};
 	gpipeline.pRootSignature = rootSignature.Get();
-	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vsBlob.Get());
-	gpipeline.PS = CD3DX12_SHADER_BYTECODE(psBlob.Get());
+	gpipeline.VS.pShaderBytecode = vsBlob->GetBufferPointer();
+	gpipeline.VS.BytecodeLength = vsBlob->GetBufferSize();
+	gpipeline.PS.pShaderBytecode = psBlob->GetBufferPointer();
+	gpipeline.PS.BytecodeLength = psBlob->GetBufferSize();
 
 	// デフォルトのサンプルマスクを表す定数
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
