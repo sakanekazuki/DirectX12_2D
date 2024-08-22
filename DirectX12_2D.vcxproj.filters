@@ -32,6 +32,12 @@
     <Filter Include="ソース ファイル\Transform">
       <UniqueIdentifier>{805355b8-4533-4ebb-891e-e74c6e9f758d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\World">
+      <UniqueIdentifier>{82b3d8f0-7c19-4ec0-8dcf-66e71b2c12ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Manager">
+      <UniqueIdentifier>{9070a73c-af1e-4a62-b1fa-b1a06c350b0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -63,6 +69,12 @@
     </ClCompile>
     <ClCompile Include="Source\Transform\Transform.cpp">
       <Filter>ソース ファイル\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Manager\FileManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Manager\ShaderManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="Source\Transform\Transform.h">
       <Filter>ソース ファイル\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\FileManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\ShaderManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

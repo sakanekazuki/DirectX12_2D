@@ -28,6 +28,8 @@ public:
 
 	void Run();
 
+	ID3D12Resource* LoadTextureFromFile(std::string& filePath);
+
 private:
 	Application();
 	~Application() = default;
@@ -76,6 +78,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap = nullptr;
 	CD3DX12_VIEWPORT viewport;
 	CD3DX12_RECT scissorrect;
+
+
+	std::unordered_map<std::string, ID3D12Resource*> textureResources;
 
 };
 

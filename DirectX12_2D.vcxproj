@@ -134,6 +134,8 @@
     <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Manager\FileManager.cpp" />
+    <ClCompile Include="Source\Manager\ShaderManager.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector3.cpp" />
     <ClCompile Include="Source\Math\Vector4.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component\Component.h" />
+    <ClInclude Include="Source\Manager\FileManager.h" />
+    <ClInclude Include="Source\Manager\ShaderManager.h" />
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Math\Vector3.h" />
     <ClInclude Include="Source\Math\Vector4.h" />

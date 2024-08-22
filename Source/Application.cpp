@@ -396,15 +396,23 @@ HRESULT Application::CreateRenderTarget()
 	return result;
 }
 
-
+/**
+* 頂点バッファ作成
+*/
 HRESULT Application::CreateVertexBuffer()
 {
-	DirectX::XMFLOAT3 vertices[] =
+	struct Vertex
 	{
-		{-0.4f,-0.7f,0.0f},
-		{-0.4f, 0.7f,0.0f},
-		{ 0.4f,-0.7f,0.0f},
-		{ 0.4f, 0.7f,0.0f},
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT2 uv;
+	};
+
+	Vertex vertices[] =
+	{
+		{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},
+		{{-0.4f, 0.7f,0.0f},{0.0f,0.0f}},
+		{{ 0.4f,-0.7f,0.0f},{1.0f,1.0f}},
+		{{ 0.4f, 0.7f,0.0f},{1.0f,0.0f}},
 	};
 
 	D3D12_HEAP_PROPERTIES heapProp = {};
@@ -433,7 +441,7 @@ HRESULT Application::CreateVertexBuffer()
 		nullptr,
 		IID_PPV_ARGS(vertexBuffer.ReleaseAndGetAddressOf()));
 
-	DirectX::XMFLOAT3* vertexMap = nullptr;
+	Vertex* vertexMap = nullptr;
 	result = vertexBuffer->Map(0, nullptr, (void**)&vertexMap);
 	std::copy(std::begin(vertices), std::end(vertices), vertexMap);
 	vertexBuffer->Unmap(0, nullptr);
@@ -560,6 +568,15 @@ HRESULT Application::CreateGraphicsPipeline()
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
 			0
 		},
+		{
+			"TEXCOORD",
+			0,
+			DXGI_FORMAT_R32G32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
 	};
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline = {};
@@ -652,4 +669,84 @@ HRESULT Application::CreateRootSignature()
 		return result;
 	}
 	return result;
+}
+
+/**
+* ファイルからテクスチャを読み込む
+* 
+* @param filePath 読み込むファイルのパス
+* 
+* @return テクスチャのリソース
+*/
+ID3D12Resource* Application::LoadTextureFromFile(std::string& filePath)
+{
+	if (textureResources.find(filePath) != textureResources.end())
+	{
+		return textureResources[filePath];
+	}
+
+	struct TextureRGBA
+	{
+		unsigned char R, G, B, A;
+	};
+
+	std::vector<TextureRGBA> texturedata(256 * 256);
+
+	for(auto& rgba : texturedata)
+	{
+		rgba.R = rand() % 256;
+		rgba.G = rand() % 256;
+		rgba.B = rand() % 256;
+		rgba.A = 255;
+	}
+
+	D3D12_HEAP_PROPERTIES textureHeapProperties = {};
+	textureHeapProperties.Type = D3D12_HEAP_TYPE_CUSTOM;
+	textureHeapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	textureHeapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+
+	textureHeapProperties.CreationNodeMask = 0;
+	textureHeapProperties.VisibleNodeMask = 0;
+
+	D3D12_RESOURCE_DESC resDesc = {};
+	resDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	resDesc.Width = 256;
+	resDesc.Height = 256;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.SampleDesc.Quality = 0;
+	resDesc.MipLevels = 1;
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	resDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+
+	ID3D12Resource* textureBuffer = nullptr;
+	auto result = device->CreateCommittedResource(
+		&textureHeapProperties,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		nullptr,
+		IID_PPV_ARGS(&textureBuffer));
+
+	if (FAILED(result))
+	{
+		return nullptr;
+	}
+
+	result = textureBuffer->WriteToSubresource(
+		0,
+		nullptr,
+		texturedata.data(),
+		sizeof(TextureRGBA) * 256,
+		sizeof(TextureRGBA) * texturedata.size());
+
+	if (FAILED(result))
+	{
+		return nullptr;
+	}
+
+	textureResources[filePath] = textureBuffer;
+
+	return textureBuffer;
 }
