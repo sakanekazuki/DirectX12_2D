@@ -60,12 +60,14 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
 
+	Microsoft::WRL::ComPtr<ID3D12Resource> idxBuffer = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;
 	UINT64 fenceValue = 0;
 
 	D3D12_VERTEX_BUFFER_VIEW vbView = {};
+	D3D12_INDEX_BUFFER_VIEW ibView = {};
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;

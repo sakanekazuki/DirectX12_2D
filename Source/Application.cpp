@@ -187,10 +187,11 @@ void Application::Run()
 
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		commandList->IASetVertexBuffers(0, 1, &vbView);
+		commandList->IASetIndexBuffer(&ibView);
 
 		commandList->SetGraphicsRootSignature(rootSignature.Get());
 
-		commandList->DrawInstanced(3, 1, 0, 0);
+		commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
 		barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 			backBuffers[bbIdx],
@@ -400,13 +401,14 @@ HRESULT Application::CreateVertexBuffer()
 {
 	DirectX::XMFLOAT3 vertices[] =
 	{
-		{-1.0f,-1.0f,0.0f},
-		{-1.0f,1.0f,0.0f},
-		{1.0f,-1.0f,0.0f},
+		{-0.4f,-0.7f,0.0f},
+		{-0.4f, 0.7f,0.0f},
+		{ 0.4f,-0.7f,0.0f},
+		{ 0.4f, 0.7f,0.0f},
 	};
 
 	D3D12_HEAP_PROPERTIES heapProp = {};
-	
+
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 	heapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
 	heapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
@@ -435,6 +437,28 @@ HRESULT Application::CreateVertexBuffer()
 	result = vertexBuffer->Map(0, nullptr, (void**)&vertexMap);
 	std::copy(std::begin(vertices), std::end(vertices), vertexMap);
 	vertexBuffer->Unmap(0, nullptr);
+
+	unsigned short indices[] = { 0,1,2, 2,1,3 };
+
+	resDesc.Width = sizeof(indices);
+
+	result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(idxBuffer.ReleaseAndGetAddressOf()));
+
+	unsigned short* mappedIdx = nullptr;
+	idxBuffer->Map(0, nullptr, (void**)&mappedIdx);
+
+	std::copy(std::begin(indices), std::end(indices), mappedIdx);
+	idxBuffer->Unmap(0, nullptr);
+
+	ibView.BufferLocation = idxBuffer->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeof(indices);
 
 	// バッファの仮想アドレス
 	vbView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
