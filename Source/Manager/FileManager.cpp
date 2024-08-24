@@ -13,10 +13,10 @@
 
 namespace
 {
-File::FileManager* fileManager = nullptr;
+FileManagement::FileManager* fileManager = nullptr;
 }
 
-namespace File
+namespace FileManagement
 {
 /**
 * ‰Šú‰»
@@ -156,4 +156,4 @@ std::vector<std::string> FileManager::SeartchInExtension(const std::string& exte
 	return result;
 }
 
-} // namespace File
+} // namespace FileManagement

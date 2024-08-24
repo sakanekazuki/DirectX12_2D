@@ -131,33 +131,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Actor\Actor.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Manager\FileManager.cpp" />
     <ClCompile Include="Source\Manager\ShaderManager.cpp" />
+    <ClCompile Include="Source\Manager\TextureManager.cpp" />
     <ClCompile Include="Source\Math\Vector2.cpp" />
     <ClCompile Include="Source\Math\Vector3.cpp" />
     <ClCompile Include="Source\Math\Vector4.cpp" />
+    <ClCompile Include="Source\Object\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Object\Object.cpp" />
+    <ClCompile Include="Source\Object\UI\UI.cpp" />
     <ClCompile Include="Source\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Transform\Transform.cpp" />
     <ClCompile Include="Source\Utility\Utility.cpp" />
     <ClCompile Include="Source\Window\Window.cpp" />
+    <ClCompile Include="Source\World\Level.cpp" />
+    <ClCompile Include="Source\World\LevelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Actor\Actor.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Manager\FileManager.h" />
     <ClInclude Include="Source\Manager\ShaderManager.h" />
+    <ClInclude Include="Source\Manager\TextureManager.h" />
     <ClInclude Include="Source\Math\Vector2.h" />
     <ClInclude Include="Source\Math\Vector3.h" />
     <ClInclude Include="Source\Math\Vector4.h" />
+    <ClInclude Include="Source\Object\Actor\Actor.h" />
+    <ClInclude Include="Source\Object\Object.h" />
+    <ClInclude Include="Source\Object\UI\UI.h" />
     <ClInclude Include="Source\Physics\Collision\Collider.h" />
     <ClInclude Include="Source\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Transform\Transform.h" />
     <ClInclude Include="Source\Utility\Utility.h" />
     <ClInclude Include="Source\Window\Window.h" />
+    <ClInclude Include="Source\World\Level.h" />
+    <ClInclude Include="Source\World\LevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shader\BasicPixelShader.hlsl">

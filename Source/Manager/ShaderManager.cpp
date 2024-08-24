@@ -9,10 +9,10 @@
 
 namespace
 {
-Shader::ShaderManager* shaderManager = nullptr;
+ShaderManagement::ShaderManager* shaderManager = nullptr;
 }
 
-namespace Shader
+namespace ShaderManagement
 {
 /**
 * 初期化
@@ -60,9 +60,7 @@ ShaderManager::ShaderManager()
 	// インスタンス取得
 	File::FileManager& fileManager = File::FileManager::Instance();
 	// ソースファイル取得
-	std::vector<std::string> files = fileManager.SeartchInExtension(".hlsl");
-
-	
+	shaderFiles = fileManager.SeartchInExtension(".hlsl");
 }
 
-} // namespace Shader
+} // namespace ShaderManagement

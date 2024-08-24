@@ -1,23 +1,29 @@
 /**
-* @file Actor.cpp
+* @file Object.cpp
 */
 
-#include "Actor.h"
+#include "Object.h"
 
 #include "../Utility/Utility.h"
 
 /**
 * コンストラクタ
 */
-Actor::Actor(std::string name, std::vector<std::string> tags)
+Object::Object(std::string name, std::vector<std::string> tags)
 	:name(name)
-	, tags(tags)
+	,tags(tags)
 {}
 
 /**
+* デストラクタ
+*/
+Object::~Object()
+{}
+
+/*
 * 
 */
-void Actor::BeginPlay()
+void Object::BeginPlay()
 {
 
 }
@@ -25,9 +31,9 @@ void Actor::BeginPlay()
 /**
 * 更新
 * 
-* @param deltaTime
+* @param deltaTime 更新時間
 */
-void Actor::Tick(float deltaTime)
+void Object::Tick(float deltaTime)
 {
 
 }
@@ -35,21 +41,19 @@ void Actor::Tick(float deltaTime)
 /**
 * 衝突
 */
-void Actor::Hit()
+void Object::Hit()
 {}
 
 /**
-* 重なった際の処理
+* 重なり
 */
-void Actor::BeginOverlap()
-{
-
-}
+void Object::BeginOverlap()
+{}
 
 /**
 * 名前取得
 */
-std::string Actor::GetName()
+std::string Object::GetName()
 {
 	return name;
 }
@@ -59,7 +63,7 @@ std::string Actor::GetName()
 * 
 * @param tag 追加するタグ
 */
-void Actor::AddTag(std::string tag)
+void Object::AddTag(const std::string& tag)
 {
 	if (!ActorHasTag(tag))
 	{
@@ -74,9 +78,9 @@ void Actor::AddTag(std::string tag)
 /**
 * タグを所持しているか調べる
 * 
-* @param tag 調べるタグ
+* @arapm tag 調べるタグ
 */
-bool Actor::ActorHasTag(std::string tag)
+bool Object::ActorHasTag(const std::string& tag)
 {
 	for (auto& str : tags)
 	{

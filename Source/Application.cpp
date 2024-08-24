@@ -8,6 +8,9 @@
 
 #include "Utility/Utility.h"
 #include "Window/Window.h"
+#include "Manager/FileManager.h"
+#include "Manager/ShaderManager.h"
+#include "Manager/TextureManager.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -147,6 +150,10 @@ void Application::Finalize()
 */
 void Application::Run()
 {
+	FileManagement::FileManager::Initialize();
+	ShaderManagement::ShaderManager::Initialize();
+	TextureManagement::TextureManager::Initialize();
+
 	WindowManagement::WindowManager& windowManager = WindowManagement::WindowManager::Instance();
 	windowManager.ShowWindowByName(windowName);
 
@@ -218,6 +225,10 @@ void Application::Run()
 
 		swapChain->Present(1, 0);
 	}
+
+	FileManagement::FileManager::Finalize();
+	ShaderManagement::ShaderManager::Finalize();
+	TextureManagement::TextureManager::Finalize();
 }
 
 Application::Application()

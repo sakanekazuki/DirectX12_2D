@@ -26,9 +26,6 @@
     <Filter Include="ソース ファイル\Component">
       <UniqueIdentifier>{789c4e6f-5874-4980-8cb8-14bc9676d3b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Actor">
-      <UniqueIdentifier>{b10995dc-b941-437c-9015-8687fee6de0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Transform">
       <UniqueIdentifier>{805355b8-4533-4ebb-891e-e74c6e9f758d}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,18 @@
     </Filter>
     <Filter Include="ソース ファイル\Manager">
       <UniqueIdentifier>{9070a73c-af1e-4a62-b1fa-b1a06c350b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{860fc693-db07-446b-a747-94401b990261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object">
+      <UniqueIdentifier>{e4a35a00-67e1-43e9-82ca-7f775b83a3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Actor">
+      <UniqueIdentifier>{1b5f09b5-1c13-4b28-b7bf-a8815f585afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\UI">
+      <UniqueIdentifier>{2aad8d1e-e1d5-408d-89ef-36f3c96fce56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +73,6 @@
     <ClCompile Include="Source\Physics\PhysicsManager.cpp">
       <Filter>ソース ファイル\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Actor\Actor.cpp">
-      <Filter>ソース ファイル\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform\Transform.cpp">
       <Filter>ソース ファイル\Transform</Filter>
     </ClCompile>
@@ -75,6 +81,24 @@
     </ClCompile>
     <ClCompile Include="Source\Manager\ShaderManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Manager\TextureManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\LevelManager.cpp">
+      <Filter>ソース ファイル\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Level.cpp">
+      <Filter>ソース ファイル\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Actor\Actor.cpp">
+      <Filter>ソース ファイル\Object\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Object.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\UI\UI.cpp">
+      <Filter>ソース ファイル\Object\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +129,6 @@
     <ClInclude Include="Source\Component\Component.h">
       <Filter>ソース ファイル\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Actor\Actor.h">
-      <Filter>ソース ファイル\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Transform\Transform.h">
       <Filter>ソース ファイル\Transform</Filter>
     </ClInclude>
@@ -116,6 +137,24 @@
     </ClInclude>
     <ClInclude Include="Source\Manager\ShaderManager.h">
       <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Manager\TextureManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\LevelManager.h">
+      <Filter>ソース ファイル\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Level.h">
+      <Filter>ソース ファイル\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\Object.h">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\Actor\Actor.h">
+      <Filter>ソース ファイル\Object\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\UI\UI.h">
+      <Filter>ソース ファイル\Object\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

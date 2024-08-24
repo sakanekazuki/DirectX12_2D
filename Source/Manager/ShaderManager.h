@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-namespace Shader
+namespace ShaderManagement
 {
 // シェーダー管理クラス
 class ShaderManager
@@ -31,6 +31,6 @@ private:
 
 };
 
-} // namespace Shader
+} // namespace ShaderManagement
 
 #endif // SHADERMANAGER_H_INCLUDE

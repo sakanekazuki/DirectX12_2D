@@ -9,7 +9,7 @@
 #include <string>
 #include <filesystem>
 
-namespace File
+namespace FileManagement
 {
 // ファイル管理クラス
 class FileManager final
@@ -42,6 +42,6 @@ private:
 
 };
 
-} // namespace File
+} // namespace FileManagement
 
 #endif // FILEMANAGER_H_INCLUDE
